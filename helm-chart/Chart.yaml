@@ -1,0 +1,3 @@
+apiVersion: v2
+name: root-sync
+version: 0.0.0

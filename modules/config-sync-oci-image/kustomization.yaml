@@ -1,0 +1,4 @@
+helmCharts:
+  - name: root-sync
+    namespace: config-management-system
+    valuesFile: values.yaml
