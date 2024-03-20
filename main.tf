@@ -9,7 +9,7 @@ module "config_sync_oci_image" {
   manifests_path = "kubernetes-manifests"
   env_vars = {
     EXTERNAL_SECRETS_SERVICE_ACCOUNT_EMAIL = module.baseline.service_account_emails["external-secrets"]
-    SECRET_PROJECT_ID                      = var.project_id
+    SECRET_MANAGER_PROJECT_ID              = var.project_id
   }
 }
 
