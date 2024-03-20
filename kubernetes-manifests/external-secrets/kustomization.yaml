@@ -1,7 +1,7 @@
 helmCharts:
   - releaseName: external-secrets
     namespace: external-secrets
-    name: external-secrets
+    name: external-secrets-0.9.13
     valuesInline:
       image:
         repository: europe-docker.pkg.dev/senacor-playground/beppo-repo/imported/ghcr.io/external-secrets/external-secrets
