@@ -1,9 +1,10 @@
 resource "google_project_service" "services" {
   for_each = toset([
-    "container.googleapis.com",
-    "gkehub.googleapis.com",
     "anthos.googleapis.com",
     "anthosconfigmanagement.googleapis.com",
+    "container.googleapis.com",
+    "gkehub.googleapis.com",
+    "secretmanager.googleapis.com",
   ])
   project            = var.project_id
   service            = each.key

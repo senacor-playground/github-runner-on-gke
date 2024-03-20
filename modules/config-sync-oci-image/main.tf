@@ -1,31 +1,40 @@
+locals {
+  hash = sha256(jsonencode([
+    [for f in fileset(".", "${var.manifests_path}/**") : "${f}:${filebase64sha256(f)}"],
+    sha256(jsonencode(var.env_vars)),
+    var.oci_repository,
+    5
+  ]))
+  oci_image = "${var.oci_repository}:build-${substr(local.hash, 0, 10)}"
+}
+
 resource "terraform_data" "kubernetes_manifests" {
-  triggers_replace = [
-    sha256(join("", [for f in fileset(".", "${var.helm_chart_path}/**") : "${f}:${filebase64sha256(f)}"])),
-    sha256(jsonencode(var.values)),
-    9, # Change this to force rerun script
-  ]
+  triggers_replace = local.oci_image
 
   provisioner "local-exec" {
     command = <<-EOT
-      TMP_DIR=$(mktemp -d)
+      TMP_DIR="$(mktemp -d)"
 
-      mkdir -p "$TMP_DIR/charts/root-sync"
-      touch "$TMP_DIR/charts/root-sync/values.yaml"
-      cp -r "$HELM_CHART_PATH"/* "$TMP_DIR/charts/root-sync"
+      cp -r * "$TMP_DIR"
+      for file in $(find . -type f -name "*.yaml"); do
+        if echo "$file" | grep -q "charts/"; then
+          continue
+        fi
+        mkdir -p "$TMP_DIR/$(dirname $file)"
+        cat $file | envsubst > "$TMP_DIR/$file"
+      done
 
-      echo "$VALUES" > "$TMP_DIR/values.yaml"
-      cp "$MODULE_PATH/kustomization.yaml" "$TMP_DIR/kustomization.yaml"
-
-      tar -C "$TMP_DIR" -c . | crane append -f - -t $OCI_IMAGE
+      tar -C "$TMP_DIR" -c . | crane append -f - -t "$OCI_IMAGE"
+      crane copy "$OCI_IMAGE" "$OCI_REPOSITORY:latest"
 
       rm -r "$TMP_DIR"
       EOT
 
-    environment = {
-      HELM_CHART_PATH = var.helm_chart_path
-      MODULE_PATH     = path.module
-      OCI_IMAGE       = var.oci_image
-      VALUES          = jsonencode(var.values)
-    }
+    working_dir = var.manifests_path
+
+    environment = merge(var.env_vars, {
+      OCI_IMAGE      = local.oci_image
+      OCI_REPOSITORY = var.oci_repository
+    })
   }
 }

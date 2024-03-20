@@ -26,6 +26,10 @@ variable "subnet_id" {
   type = string
 }
 
+variable "config_sync_service_account_email" {
+  type = string
+}
+
 variable "config_sync_oci_image" {
   type = string
 }

@@ -7,6 +7,7 @@ resource "google_container_cluster" "default" {
   network                   = var.network_id
   subnetwork                = var.subnet_id
   deletion_protection       = false
+  remove_default_node_pool  = true
 
   ip_allocation_policy {
     cluster_secondary_range_name  = "pods"
@@ -75,7 +76,7 @@ resource "google_gke_hub_feature_membership" "default" {
         sync_repo                 = var.config_sync_oci_image
         sync_wait_secs            = "20"
         secret_type               = "gcpserviceaccount"
-        gcp_service_account_email = var.nodes_service_account_email
+        gcp_service_account_email = var.config_sync_service_account_email
       }
     }
   }

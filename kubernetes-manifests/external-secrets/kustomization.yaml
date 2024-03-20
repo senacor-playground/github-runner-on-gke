@@ -1,19 +1,8 @@
-apiVersion: configsync.gke.io/v1beta1
-kind: RootSync
-metadata:
-  name: external-secrets
-  namespace: config-management-system
-spec:
-  sourceFormat: unstructured
-  sourceType: helm
-  helm:
-    repo: oci://europe-docker.pkg.dev/senacor-playground/beppo-repo/imported/helm/external-secrets
-    chart: external-secrets
-    version: 0.9.13
-    releaseName: external-secrets
+helmCharts:
+  - releaseName: external-secrets
     namespace: external-secrets
-    auth: k8sserviceaccount
-    values:
+    name: external-secrets
+    valuesInline:
       image:
         repository: europe-docker.pkg.dev/senacor-playground/beppo-repo/imported/ghcr.io/external-secrets/external-secrets
       certController:
@@ -24,4 +13,6 @@ spec:
           repository: europe-docker.pkg.dev/senacor-playground/beppo-repo/imported/ghcr.io/external-secrets/external-secrets
       serviceAccount:
         annotations:
-          iam.gke.io/gcp-service-account: {{.Values.externalSecretsServiceAccountEmail}}
+          iam.gke.io/gcp-service-account: $EXTERNAL_SECRETS_SERVICE_ACCOUNT_EMAIL
+resources:
+  - cluster-secret-store.yaml

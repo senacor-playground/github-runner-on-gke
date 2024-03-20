@@ -1,12 +1,12 @@
-variable "oci_image" {
+variable "oci_repository" {
   type = string
 }
 
-variable "helm_chart_path" {
+variable "manifests_path" {
   type = string
 }
 
-variable "values" {
+variable "env_vars" {
   type    = map(any)
   default = {}
 }
