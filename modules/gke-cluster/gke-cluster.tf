@@ -3,7 +3,7 @@ resource "google_container_cluster" "default" {
   name                      = var.gke_cluster_name
   location                  = var.zone
   initial_node_count        = 1
-  default_max_pods_per_node = 16
+  default_max_pods_per_node = 32
   network                   = var.network_id
   subnetwork                = var.subnet_id
   deletion_protection       = false
@@ -27,7 +27,7 @@ resource "google_container_cluster" "default" {
     enabled = true
     auto_provisioning_defaults {
       disk_type       = "pd-ssd"
-      disk_size       = 10
+      disk_size       = 100
       image_type      = "COS_CONTAINERD"
       oauth_scopes    = ["https://www.googleapis.com/auth/cloud-platform"]
       service_account = var.nodes_service_account_email
@@ -49,7 +49,6 @@ resource "google_container_cluster" "default" {
       minimum       = 1
       maximum       = 32000
     }
-
   }
 
   fleet {

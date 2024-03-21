@@ -10,6 +10,11 @@ helmCharts:
           containers:
             - name: runner
               image: europe-docker.pkg.dev/senacor-playground/beppo-repo/imported/ghcr.io/actions/actions-runner:2.314.1
+              command: ["/home/runner/run.sh"]
+              resources:
+                requests:
+                  cpu: 1000m
+                  memory: 2.0Gi
       controllerServiceAccount:
         namespace: arc-systems
         name: arc-gha-rs-controller
