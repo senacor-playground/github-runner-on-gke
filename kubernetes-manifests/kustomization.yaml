@@ -1,3 +1,4 @@
 resources:
+  - arc-runners
   - arc-systems
   - external-secrets

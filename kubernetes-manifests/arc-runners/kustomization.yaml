@@ -1,0 +1,18 @@
+helmCharts:
+  - releaseName: self-hosted-basic
+    namespace: arc-runners
+    name: gha-runner-scale-set-0.8.3
+    valuesInline:
+      githubConfigUrl: https://github.com/senacor-playground
+      githubConfigSecret: github-runners-app
+      template:
+        spec:
+          containers:
+            - name: runner
+              image: europe-docker.pkg.dev/senacor-playground/beppo-repo/imported/ghcr.io/actions/actions-runner:2.314.1
+      controllerServiceAccount:
+        namespace: arc-systems
+        name: arc-gha-rs-controller
+      minRunners: 2
+resources:
+  - secret.yaml
