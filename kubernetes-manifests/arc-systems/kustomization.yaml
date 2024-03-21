@@ -1,0 +1,11 @@
+helmCharts:
+  - releaseName: gha-runner-scale-set-controller
+    namespace: arc-systems
+    name: gha-runner-scale-set-controller-0.8.3
+    includeCRDs: true
+    valuesInline:
+      image:
+        repository: europe-docker.pkg.dev/senacor-playground/beppo-repo/imported/ghcr.io/actions/gha-runner-scale-set-controller
+
+resources:
+  - secret.yaml
