@@ -7,7 +7,7 @@ resource "google_compute_network" "default" {
 resource "google_compute_subnetwork" "subnets" {
   for_each = {
     "github-runner-gke-cluster" = {
-      region              = "europe-west1"
+      region              = "europe-west4"
       ip_cidr_range       = "10.0.0.0/28"
       secondary_ip_ranges = { "pods" = "10.1.0.0/20", "services" = "10.2.0.0/25" }
     }

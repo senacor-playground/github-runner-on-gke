@@ -1,7 +1,13 @@
+data "google_compute_zones" "available" {
+  project = var.project_id
+  region  = var.region
+}
+
 resource "google_container_cluster" "default" {
   project                   = var.project_id
   name                      = var.gke_cluster_name
   location                  = var.zone
+  node_locations            = [for zone in data.google_compute_zones.available.names : zone if zone != var.zone]
   initial_node_count        = 1
   default_max_pods_per_node = 32
   network                   = var.network_id
@@ -9,14 +15,14 @@ resource "google_container_cluster" "default" {
   deletion_protection       = false
   remove_default_node_pool  = true
 
-  ip_allocation_policy {
-    cluster_secondary_range_name  = "pods"
-    services_secondary_range_name = "services"
-  }
-
   private_cluster_config {
     enable_private_nodes   = true
     master_ipv4_cidr_block = var.master_ipv4_cidr_block
+  }
+
+  ip_allocation_policy {
+    cluster_secondary_range_name  = "pods"
+    services_secondary_range_name = "services"
   }
 
   release_channel {
@@ -57,6 +63,12 @@ resource "google_container_cluster" "default" {
 
   workload_identity_config {
     workload_pool = "${var.project_id}.svc.id.goog"
+  }
+
+  addons_config {
+    gcs_fuse_csi_driver_config {
+      enabled = true
+    }
   }
 }
 

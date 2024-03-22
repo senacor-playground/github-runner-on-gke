@@ -9,6 +9,7 @@ module "config_sync_oci_image" {
   manifests_path = "kubernetes-manifests"
   env_vars = {
     EXTERNAL_SECRETS_SERVICE_ACCOUNT_EMAIL = module.baseline.service_account_emails["external-secrets"]
+    GITHUB_RUNNER_SERVICE_ACCOUNT_EMAIL    = module.baseline.service_account_emails["github-runner"]
     SECRET_MANAGER_PROJECT_ID              = var.project_id
   }
 }
@@ -17,7 +18,8 @@ module "gke_cluster" {
   source                            = "./modules/gke-cluster"
   project_id                        = var.project_id
   gke_cluster_name                  = "github-runners"
-  zone                              = "europe-west1-d"
+  region                            = "europe-west4"
+  zone                              = "europe-west4-a"
   nodes_service_account_email       = module.baseline.service_account_emails["github-runner-nodes"]
   network_id                        = module.baseline.network_id
   subnet_id                         = module.baseline.subnet_ids["github-runner-gke-cluster"]

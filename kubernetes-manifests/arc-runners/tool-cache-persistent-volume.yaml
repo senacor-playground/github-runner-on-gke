@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: github-runners-tool-cache
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 5Gi
+  storageClassName: example-storage-class
+  claimRef:
+    namespace: arc-runners
+    name: github-runners-tool-cache
+  mountOptions:
+    - implicit-dirs
+    - uid=1001
+  csi:
+    driver: gcsfuse.csi.storage.gke.io
+    volumeHandle: github-runners-tool-cache-senacor-playground
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: github-runners-tool-cache
+  namespace: arc-runners
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+  volumeName: github-runners-tool-cache
+  storageClassName: example-storage-class

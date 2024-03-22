@@ -1,7 +1,7 @@
 resource "google_compute_router" "default" {
   project = var.project_id
   name    = "beppo"
-  region  = "europe-west1"
+  region  = "europe-west4"
   network = google_compute_network.default.id
 
   bgp {
