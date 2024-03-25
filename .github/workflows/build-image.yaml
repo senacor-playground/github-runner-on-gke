@@ -15,7 +15,7 @@ jobs:
       - name: Prepare Dockerfile
         run: |
           echo "FROM ghcr.io/actions/actions-runner:2.314.1" > Dockerfile
-          echo "RUN cp -r /mnt/tool-cache/node/20.11.1 /home/runner/_work/_tool/node/20.11.1/" >> Dockerfile
+          echo "mkdir -p /home/runner/_work/_tool && cp -r /mnt/tool-cache/node/20.11.1 /home/runner/_work/_tool/node/20.11.1/" >> Dockerfile
           cat Dockerfile
       - uses: google-github-actions/auth@v2
         with:
