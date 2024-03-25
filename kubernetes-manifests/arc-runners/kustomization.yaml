@@ -6,12 +6,7 @@ helmCharts:
       githubConfigUrl: https://github.com/senacor-playground
       githubConfigSecret: github-runners-app
       template:
-        metadata:
-          annotations:
-            gke-gcsfuse/volumes: "true"
         spec:
-          securityContext:
-            fsGroup: 1001
           containers:
             - name: runner
               image: europe-docker.pkg.dev/senacor-playground/beppo-repo/imported/ghcr.io/actions/actions-runner:2.314.1
@@ -20,25 +15,9 @@ helmCharts:
                 requests:
                   cpu: 1000m
                   memory: 2.0Gi
-              volumeMounts:
-                - mountPath: /home/runner/_work # Makes the folder exist and owned by the "runner" user
-                  name: work
-                - name: tool-cache
-                  mountPath: /home/runner/_work/_tool
-                  readOnly: false
-          serviceAccountName: github-runner
-          volumes:
-            - name: work
-              emptyDir: {}
-            - name: tool-cache
-              persistentVolumeClaim:
-                claimName: github-runners-tool-cache
-                readOnly: false
       controllerServiceAccount:
         namespace: arc-systems
         name: arc-gha-rs-controller
       minRunners: 2
 resources:
   - secret.yaml
-  - service-account.yaml
-  - tool-cache-persistent-volume.yaml
