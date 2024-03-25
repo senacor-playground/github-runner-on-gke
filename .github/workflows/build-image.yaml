@@ -12,7 +12,14 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - run: tar -czf - ${{ runner.tool_cache }}/node/20.11.1 | sha256sum
+      - name: Build image
+        run: |
+          docker run -id --name my_container ghcr.io/actions/actions-runner:2.314.1
+          docker cp "${{ runner.tool_cache }}/node/16.20.2" "my_container:/home/runner/_work/_tool/node/16.20.2"
+          docker cp "${{ runner.tool_cache }}/node/20.11.1" "my_container:/home/runner/_work/_tool/node/20.11.1"
+          docker commit my_container "$IMAGE"
+          docker push "$IMAGE"
+
       # - name: Prepare Dockerfile
       #   run: |
       #     echo "FROM ghcr.io/actions/actions-runner:2.314.1" > Dockerfile
