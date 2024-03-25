@@ -23,6 +23,6 @@ jobs:
           newcontainer=$(buildah from ghcr.io/actions/actions-runner:2.314.1)
           buildah copy $newcontainer "${{ runner.tool_cache }}/node/20.11.1" "/home/runner/_work/_tool/node/20.11.1"
           buildah commit $newcontainer "$IMAGE"
-          buildah push docker://"$IMAGE"
+          buildah push "$IMAGE"
         env:
           IMAGE: europe-docker.pkg.dev/senacor-playground/beppo-repo/actions-runner-with-tool-cache:latest
