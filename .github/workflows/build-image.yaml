@@ -9,16 +9,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - run: |
+          sudo apt-get update && sudo apt-get install tree
+          tree -dL 2 "${{ runner.tool_cache }}"
       - name: Clear files from existing tool cache
         run: rm -rf "${{ runner.tool_cache }}"
-      - uses: "google-github-actions/setup-gcloud@v2"
+      # - uses: "google-github-actions/setup-gcloud@v2"
       # - run: |
       #     docker build . --arg "${{ runner.tool_cache }}" -t europe-docker.pkg.dev/senacor-playground/beppo-repo/actions-runner-with-tool-cache:latest
-      - name: Archive tool cache
-        run: |
-          cd "${{ runner.tool_cache }}"
-          tar -czf tool_cache.tar.gz *
-      - name: Upload tool cache artifact
-        uses: actions/upload-artifact@v3
-        with:
-          path: ${{runner.tool_cache}}/tool_cache.tar.gz
+      # - name: Archive tool cache
+      #   run: |
+      #     cd "${{ runner.tool_cache }}"
+      #     tar -czf tool_cache.tar.gz *
+      # - name: Upload tool cache artifact
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     path: ${{runner.tool_cache}}/tool_cache.tar.gz
