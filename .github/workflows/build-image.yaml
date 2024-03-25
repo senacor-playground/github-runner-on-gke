@@ -12,12 +12,13 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Build image with tool cache
+      - name: Prepare Dockerfile
         run: |
           echo "FROM ghcr.io/actions/actions-runner:2.314.1" > Dockerfile
           echo "COPY --from=tool-cache node/20.11.1 /home/runner/_work/_tool/"
           cat Dockerfile
-          docker build --build-context "tool-cache=${{ runner.tool_cache }}" . -t europe-docker.pkg.dev/senacor-playground/beppo-repo/actions-runner-with-tool-cache:latest
+      - name: Docker build
+        run: docker build --build-context "tool-cache=${{ runner.tool_cache }}" . -t europe-docker.pkg.dev/senacor-playground/beppo-repo/actions-runner-with-tool-cache:latest
       - uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: projects/211935152727/locations/global/workloadIdentityPools/github/providers/senacor-playground
