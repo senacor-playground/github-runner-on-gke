@@ -15,9 +15,9 @@ jobs:
       - name: Prepare Dockerfile
         run: |
           echo "FROM ghcr.io/actions/actions-runner:2.314.1" > Dockerfile
-          echo "RUN mkdir -p /home/runner/_work/_tool/node/16.20.2 && cp -r /mnt/tool-cache/node/16.20.2 /home/runner/_work/_tool/node/16.20.2 && find /home/runner/_work/_tool/node/20.11.1 -exec touch {} \;" >> Dockerfile
+          echo "RUN mkdir -p /home/runner/_work/_tool/node/16.20.2 && cp -r /mnt/tool-cache/node/16.20.2 /home/runner/_work/_tool/node/16.20.2 && find /home/runner/_work/_tool/node/16.20.2 -exec touch {} \;" >> Dockerfile
           echo "RUN mkdir -p /home/runner/_work/_tool/node/20.11.1 && cp -r /mnt/tool-cache/node/20.11.1 /home/runner/_work/_tool/node/20.11.1 && find /home/runner/_work/_tool/node/20.11.1 -exec touch {} \;" >> Dockerfile
-          echo "RUN mkdir -p /home/runner/_work/_tool/CodeQL/2.16.4 && cp -r /mnt/tool-cache/CodeQL/2.16.4 /home/runner/_work/_tool/CodeQL/2.16.4 && find /home/runner/_work/_tool/node/20.11.1 -exec touch {} \;" >> Dockerfile
+          echo "RUN mkdir -p /home/runner/_work/_tool/CodeQL/2.16.4 && cp -r /mnt/tool-cache/CodeQL/2.16.4 /home/runner/_work/_tool/CodeQL/2.16.4 && find /home/runner/_work/_tool/CodeQL/2.16.4 -exec touch {} \;" >> Dockerfile
           cat Dockerfile
       - uses: google-github-actions/auth@v2
         with:
