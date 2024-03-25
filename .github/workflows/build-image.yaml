@@ -25,7 +25,7 @@ jobs:
       - name: Build image
         run: |
           sudo apt-get install buildah
-          buildah build --layers --timestamp 0 -v "${{ runner.tool_cache }}:/mnt/tool-cache" -t "$IMAGE" .
+          buildah build --layers -v "${{ runner.tool_cache }}:/mnt/tool-cache" -t "$IMAGE" .
           buildah push "$IMAGE"
         env:
           IMAGE: europe-docker.pkg.dev/senacor-playground/beppo-repo/actions-runner-with-tool-cache:latest
