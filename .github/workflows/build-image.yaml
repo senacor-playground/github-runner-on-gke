@@ -15,7 +15,7 @@ jobs:
       - name: Prepare Dockerfile
         run: |
           echo "FROM ghcr.io/actions/actions-runner:2.314.1" > Dockerfile
-          echo "COPY --from=tool-cache node/20.11.1 /home/runner/_work/_tool/"
+          echo "COPY --from=tool-cache node/20.11.1 /home/runner/_work/_tool/" >> Dockerfile
           cat Dockerfile
       - name: Docker build
         run: docker build --build-context "tool-cache=${{ runner.tool_cache }}" . -t europe-docker.pkg.dev/senacor-playground/beppo-repo/actions-runner-with-tool-cache:latest
