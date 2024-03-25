@@ -15,7 +15,7 @@ jobs:
       - name: Build image
         run: |
           docker run -id --name my_container ghcr.io/actions/actions-runner:2.314.1
-          docker exec my_container mkdir -p /home/runner/_work/_tool
+          docker exec my_container mkdir -p /home/runner/_work/_tool/node
           docker cp "${{ runner.tool_cache }}/node/16.20.2" "my_container:/home/runner/_work/_tool/node/16.20.2"
           docker cp "${{ runner.tool_cache }}/node/20.11.1" "my_container:/home/runner/_work/_tool/node/20.11.1"
           docker commit my_container "$IMAGE"
