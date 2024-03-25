@@ -12,6 +12,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
+      - run: sudo apt-get tree && tree -dL 2 ${{ runner.tool_cache }}
       - run: tar -czf ${{ runner.tool_cache }}/node/20.11.1 | sha256sum
       # - name: Prepare Dockerfile
       #   run: |
