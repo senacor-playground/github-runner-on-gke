@@ -12,7 +12,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - run: apt-get install buildah
+      - run: sudo apt-get install buildah
       - run: |
           newcontainer=$(buildah from ghcr.io/actions/actions-runner:2.314.1)
           buildah add $newcontainer "${{ runner.tool_cache }}node/20.11.1" "/home/runner/_work/_tool/node/20.11.1"
