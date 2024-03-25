@@ -12,6 +12,11 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Prepare Dockerfile
+        run: |
+          echo "FROM ghcr.io/actions/actions-runner:2.314.1" > Dockerfile
+          echo "COPY --from=tool-cache node/20.11.1 /home/runner/_work/_tool/node/20.11.1/" >> Dockerfile
+          cat Dockerfile
       - uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: projects/211935152727/locations/global/workloadIdentityPools/github/providers/senacor-playground
@@ -20,9 +25,7 @@ jobs:
       - name: Build image
         run: |
           sudo apt-get install buildah
-          newcontainer=$(buildah from ghcr.io/actions/actions-runner:2.314.1)
-          buildah copy $newcontainer "${{ runner.tool_cache }}/node/20.11.1" "/home/runner/_work/_tool/node/20.11.1"
-          buildah commit $newcontainer "$IMAGE"
+          buildah build --layers --timestamp 0 --build-context "tool-cache=${{ runner.tool_cache }}" . -t "$IMAGE"
           buildah push "$IMAGE"
         env:
           IMAGE: europe-docker.pkg.dev/senacor-playground/beppo-repo/actions-runner-with-tool-cache:latest
