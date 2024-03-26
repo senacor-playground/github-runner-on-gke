@@ -42,11 +42,8 @@ jobs:
 
           cat Dockerfile
           ls -la
-      - name: Build
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          tags: europe-docker.pkg.dev/senacor-playground/beppo-repo/actions-runner-with-tool-cache:latest
-          push: true
+      - run: |
+          docker buildx create --use --driver-opt image=moby/buildkit:v0.13.1
+          docker buildx build --build-arg SOURCE_DATE_EPOCH="0" --output type=image,name=$IMAGE,push=true,rewrite-timestamp=true
         env:
-          SOURCE_DATE_EPOCH: 0
+          IMAGE: europe-docker.pkg.dev/senacor-playground/beppo-repo/actions-runner-with-tool-cache:latest
