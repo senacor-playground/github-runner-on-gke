@@ -17,23 +17,19 @@ jobs:
           workload_identity_provider: projects/211935152727/locations/global/workloadIdentityPools/github/providers/senacor-playground
       - uses: google-github-actions/setup-gcloud@v2
       - run: gcloud auth configure-docker europe-docker.pkg.dev
-      - name: Create Dockerfile
+      - name: Build and push image
+        working-directory: ${{ runner.tool_cache }}
         run: |
-          #!/bin/bash
-
           folder_paths=("node/16.20.2" "node/20.11.1")
 
           echo "FROM europe-docker.pkg.dev/senacor-playground/beppo-repo/imported/ghcr.io/actions/actions-runner:2.314.1" > Dockerfile
           for folder_path in ${folder_paths[@]}; do
-            echo "COPY --form=tool-cache $folder_path /home/runner/_work/_tool/$folder_path" >> Dockerfile
+            echo "COPY $folder_path /home/runner/_work/_tool/$folder_path" >> Dockerfile
           done
 
           cat Dockerfile
-          ls -la
-      - run: |
-          sudo apt-get update
-          sudo apt-get -y install buildah
-          buildah build --layers --timestamp 0 --build-context "tool-cache=${{ runner.tool_cache }}" -t "$IMAGE" .
+
+          buildah build --layers --timestamp 0 -t "$IMAGE" .
           buildah push "$IMAGE"
         env:
           IMAGE: europe-docker.pkg.dev/senacor-playground/beppo-repo/actions-runner-with-tool-cache:latest
