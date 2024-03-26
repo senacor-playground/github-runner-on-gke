@@ -9,7 +9,7 @@ helmCharts:
         spec:
           containers:
             - name: runner
-              image: europe-docker.pkg.dev/senacor-playground/beppo-repo/imported/ghcr.io/actions/actions-runner:2.314.1
+              image: europe-docker.pkg.dev/senacor-playground/beppo-repo/actions-runner-with-tool-cache:latest
               command: ["/home/runner/run.sh"]
               resources:
                 requests:
