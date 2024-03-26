@@ -39,16 +39,16 @@ jobs:
           echo "⚙️ Generated Dockerfile:"
           cat Dockerfile
 
-          # echo "**/__pycache__" > .dockerignore
-          # echo "⚙️ Generated .dockerignore:"
-          # cat .dockerignore
+          echo "**/__pycache__" > .dockerignore
+          echo "⚙️ Generated .dockerignore:"
+          cat .dockerignore
       - uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: projects/211935152727/locations/global/workloadIdentityPools/github/providers/senacor-playground
       - uses: google-github-actions/setup-gcloud@v2
+      - run: gcloud auth configure-docker europe-docker.pkg.dev
       - name: Build image # Using Buildah due to its support for reproducible builds
         working-directory: ${{ runner.tool_cache }}
         run: buildah build --layers --timestamp 0 -t "$OUTPUT_IMAGE" .
-      - run: gcloud auth configure-docker europe-docker.pkg.dev
       - name: Push image
         run: buildah push "$OUTPUT_IMAGE"
