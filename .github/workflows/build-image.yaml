@@ -31,6 +31,8 @@ jobs:
           cat Dockerfile
           ls -la
       - run: |
+          sudo apt-get update
+          sudo apt-get -y install buildah
           buildah build --layers --timestamp 0 --build-context "tool-cache=${{ runner.tool_cache }}" -t "$IMAGE" .
           buildah push "$IMAGE"
         env:
