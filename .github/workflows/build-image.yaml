@@ -38,7 +38,7 @@ jobs:
           echo "⚙️ Generated Dockerfile:"
           cat Dockerfile
 
-          echo "__pycache__" >> .dockerignore
+          echo "*/__pycache__" > .dockerignore
           echo "⚙️ Generated .dockerignore:"
           cat .dockerignore
       - name: Build image # Using Buildah due to its support for reproducible builds
