@@ -29,12 +29,11 @@ jobs:
       - name: Build and push image
         working-directory: ${{ runner.tool_cache }}
         run: |
+          echo "FROM europe-docker.pkg.dev/senacor-playground/beppo-repo/imported/ghcr.io/actions/actions-runner:2.314.1" > Dockerfile
           while IFS= read -r -d '' folder_path; do
             echo "COPY $folder_path /home/runner/_work/_tool/$folder_path" >> Dockerfile
           done < <(find . -mindepth 2 -maxdepth 2 -type d -print0)
-
           cat Dockerfile
-
       - uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: projects/211935152727/locations/global/workloadIdentityPools/github/providers/senacor-playground
