@@ -11,6 +11,8 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      IMAGE: europe-docker.pkg.dev/senacor-playground/beppo-repo/actions-runner-with-tool-cache:latest
     steps:
       - name: Clear existing tool cache
         run: rm -rf ${{ runner.tool_cache }}/*
@@ -34,16 +36,13 @@ jobs:
             echo "COPY $folder_path /home/runner/_work/_tool/$folder_path" >> Dockerfile
           done < <(find . -mindepth 2 -maxdepth 2 -type d -print0)
           cat Dockerfile
+      - name: Build image # Using Buildah due to its support for reproducible builds
+        run: buildah build --layers --timestamp 0 -t "$IMAGE" .
       - uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: projects/211935152727/locations/global/workloadIdentityPools/github/providers/senacor-playground
       - uses: google-github-actions/setup-gcloud@v2
       - run: gcloud auth configure-docker europe-docker.pkg.dev
-      - name: Build and push image
+      - name: Push image
         working-directory: ${{ runner.tool_cache }}
-        run: |
-          # Buildah is used because it is good support for reproducible builds
-          buildah build --layers --timestamp 0 -t "$IMAGE" .
-          buildah push "$IMAGE"
-        env:
-          IMAGE: europe-docker.pkg.dev/senacor-playground/beppo-repo/actions-runner-with-tool-cache:latest
+        run: buildah push "$IMAGE"
