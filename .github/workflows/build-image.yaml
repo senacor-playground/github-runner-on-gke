@@ -41,6 +41,7 @@ jobs:
           done
 
           cat Dockerfile
+          ls -la
       - name: Build
         uses: docker/build-push-action@v5
         with:
