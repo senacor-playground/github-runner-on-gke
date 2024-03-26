@@ -35,7 +35,9 @@ jobs:
           done
 
           cat Dockerfile
-      - name: Build image
-        run: docker build --build-context "tool-cache=${{ runner.tool_cache }}" -t "$IMAGE" .
+      - name: Build and push image
+        run: |
+          docker build --build-context "tool-cache=${{ runner.tool_cache }}" -t "$IMAGE" .
+          docker push "$IMAGE"
         env:
           IMAGE: europe-docker.pkg.dev/senacor-playground/beppo-repo/actions-runner-with-tool-cache:latest
