@@ -12,6 +12,29 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Clear existing tool cache
+        run: rm -rf ./*
+
+      # -----------------------------------------------------------------------
+      # Install tools
+      # -----------------------------------------------------------------------
+      - uses: google-github-actions/setup-gcloud@v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts
+      # -----------------------------------------------------------------------
+      # End: Install tools
+      # -----------------------------------------------------------------------
+
+      - name: Build and push image
+        working-directory: ${{ runner.tool_cache }}
+        run: |
+          while IFS= read -r -d '' folder_path; do
+            echo "COPY $folder_path /home/runner/_work/_tool/$folder_path" >> Dockerfile
+          done < <(find . -mindepth 2 -maxdepth 2 -type d -print0)
+
+          cat Dockerfile
+
       - uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: projects/211935152727/locations/global/workloadIdentityPools/github/providers/senacor-playground
@@ -20,15 +43,7 @@ jobs:
       - name: Build and push image
         working-directory: ${{ runner.tool_cache }}
         run: |
-          folder_paths=("node/16.20.2" "node/18.19.1" "node/20.11.1")
-
-          echo "FROM europe-docker.pkg.dev/senacor-playground/beppo-repo/imported/ghcr.io/actions/actions-runner:2.314.1" > Dockerfile
-          for folder_path in ${folder_paths[@]}; do
-            echo "COPY $folder_path /home/runner/_work/_tool/$folder_path" >> Dockerfile
-          done
-
-          cat Dockerfile
-
+          # Buildah is used because it is good support for reproducible builds
           buildah build --layers --timestamp 0 -t "$IMAGE" .
           buildah push "$IMAGE"
         env:
