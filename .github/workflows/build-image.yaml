@@ -35,7 +35,12 @@ jobs:
           while IFS= read -r -d '' folder_path; do
             echo "COPY $folder_path /home/runner/_work/_tool/$folder_path" >> Dockerfile
           done < <(find . -mindepth 2 -maxdepth 2 -type d -print0)
+          echo "⚙️ Generated Dockerfile:"
           cat Dockerfile
+
+          echo "__pycache__" >> .dockerignore
+          echo "⚙️ Generated .dockerignore:"
+          cat .dockerignore
       - name: Build image # Using Buildah due to its support for reproducible builds
         working-directory: ${{ runner.tool_cache }}
         run: buildah build --layers --timestamp 0 -t "$OUTPUT_IMAGE" .
