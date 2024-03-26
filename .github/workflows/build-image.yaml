@@ -31,7 +31,7 @@ jobs:
       - name: Create Dockerfile
         working-directory: ${{ runner.tool_cache }}
         run: |
-          echo "FROM ghcr.io/actions/actions-runner:latest" > Dockerfile
+          echo "FROM ghcr.io/actions/actions-runner:2.314.1@sha256:20a9abcadc9884cb2f054a6061680af92ae2f60dc3aa2edb273d6bd923f457e7" > Dockerfile
           while IFS= read -r -d '' folder_path; do
             echo "COPY $folder_path /home/runner/_work/_tool/$folder_path" >> Dockerfile
           done < <(find . -mindepth 2 -maxdepth 2 -type d -print0)
