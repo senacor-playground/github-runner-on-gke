@@ -20,7 +20,7 @@ jobs:
       - name: Build and push image
         working-directory: ${{ runner.tool_cache }}
         run: |
-          folder_paths=("node/16.20.2" "node/20.11.1")
+          folder_paths=("node/16.20.2" "node/18.19.1" "node/20.11.1")
 
           echo "FROM europe-docker.pkg.dev/senacor-playground/beppo-repo/imported/ghcr.io/actions/actions-runner:2.314.1" > Dockerfile
           for folder_path in ${folder_paths[@]}; do
