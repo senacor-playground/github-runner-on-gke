@@ -44,7 +44,8 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v5
         with:
-          push: true
+          context: .
           tags: europe-docker.pkg.dev/senacor-playground/beppo-repo/actions-runner-with-tool-cache:latest
+          push: true
         env:
           SOURCE_DATE_EPOCH: 0
