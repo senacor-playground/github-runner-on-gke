@@ -37,7 +37,7 @@ jobs:
             tar -cf "$tarfile_name" "${{ runner.tool_cache }}/$folder_path" --sort=name --mtime="@0" --pax-option=exthdr.name=%d/PaxHeaders/%f,delete=atime,delete=ctime
             touch -t 197001010000.00 "$tarfile_name"
             echo "sha256: $(shasum -a 256 $tarfile_name)"
-            echo "COPY $tarfile_name home/runner/_work/_tool/$folder_path" >> Dockerfile
+            echo "COPY $tarfile_name ." >> Dockerfile
           done
 
           cat Dockerfile
