@@ -44,6 +44,6 @@ jobs:
           ls -la
       - run: |
           docker buildx create --use --driver-opt image=moby/buildkit:v0.13.1
-          docker buildx build --build-arg SOURCE_DATE_EPOCH="0" --output type=image,name=$IMAGE,push=true,rewrite-timestamp=true
+          docker buildx build --build-arg SOURCE_DATE_EPOCH="0" --output type=image,name=$IMAGE,push=true,rewrite-timestamp=true .
         env:
           IMAGE: europe-docker.pkg.dev/senacor-playground/beppo-repo/actions-runner-with-tool-cache:latest
