@@ -57,6 +57,7 @@ jobs:
         with:
           context: ${{ runner.tool_cache }}
           tags: ${{ env.OUTPUT_IMAGE }}
+          platforms: linux/amd64
           push: true
         env:
           SOURCE_DATE_EPOCH: 0
