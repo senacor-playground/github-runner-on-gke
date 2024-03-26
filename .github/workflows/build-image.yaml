@@ -43,7 +43,11 @@ jobs:
           cat Dockerfile
           ls -la
       - run: |
-          docker buildx create --use --driver-opt image=moby/buildkit:v0.13.1
-          docker buildx build --build-arg SOURCE_DATE_EPOCH="0" --output type=image,name=$IMAGE,push=true,rewrite-timestamp=true .
-        env:
-          IMAGE: europe-docker.pkg.dev/senacor-playground/beppo-repo/actions-runner-with-tool-cache:latest
+          sudo apt-get install buildah
+          buildah build --layers --timestamp 0 -t "$IMAGE" .
+          buildah push "$IMAGE"
+      # - run: |
+      #     docker buildx create --use --driver-opt image=moby/buildkit:v0.13.1
+      #     docker buildx build --platform linux/amd64 --build-arg SOURCE_DATE_EPOCH="0" --output type=image,name=$IMAGE,push=true,rewrite-timestamp=true .
+      #   env:
+      #     IMAGE: europe-docker.pkg.dev/senacor-playground/beppo-repo/actions-runner-with-tool-cache:latest
