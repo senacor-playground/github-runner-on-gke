@@ -41,10 +41,10 @@ jobs:
           done
 
           cat Dockerfile
-      - name: Build and push image
-        run: |
-          docker build -t "$IMAGE" .
-          docker push "$IMAGE"
+      - name: Build
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          tags: europe-docker.pkg.dev/senacor-playground/beppo-repo/actions-runner-with-tool-cache:latest
         env:
-          IMAGE: europe-docker.pkg.dev/senacor-playground/beppo-repo/actions-runner-with-tool-cache:latest
           SOURCE_DATE_EPOCH: 0
