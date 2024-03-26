@@ -26,7 +26,7 @@ jobs:
       # End: Install tools
       # -----------------------------------------------------------------------
 
-      - name: Build and push image
+      - name: Create Dockerfile
         working-directory: ${{ runner.tool_cache }}
         run: |
           echo "FROM europe-docker.pkg.dev/senacor-playground/beppo-repo/imported/ghcr.io/actions/actions-runner:2.314.1" > Dockerfile
