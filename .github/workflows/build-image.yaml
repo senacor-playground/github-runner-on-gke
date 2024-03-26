@@ -47,17 +47,8 @@ jobs:
           workload_identity_provider: projects/211935152727/locations/global/workloadIdentityPools/github/providers/senacor-playground
       - uses: google-github-actions/setup-gcloud@v2
       - run: gcloud auth configure-docker europe-docker.pkg.dev
-      # - name: Build image # Using Buildah due to its support for reproducible builds
-      #   working-directory: ${{ runner.tool_cache }}
-      #   run: buildah build --layers --timestamp 0 -t "$OUTPUT_IMAGE" .
-      # - name: Push image
-      #   run: buildah push "$OUTPUT_IMAGE"
-      - uses: docker/setup-buildx-action@v3
-      - uses: docker/build-push-action@v5
-        with:
-          context: ${{ runner.tool_cache }}
-          tags: ${{ env.OUTPUT_IMAGE }}
-          platforms: linux/amd64
-          push: true
-        env:
-          SOURCE_DATE_EPOCH: 0
+      - name: Build image # Using Buildah due to its support for reproducible builds
+        working-directory: ${{ runner.tool_cache }}
+        run: buildah build --layers --timestamp 0 -t "$OUTPUT_IMAGE" .
+      - name: Push image
+        run: buildah push "$OUTPUT_IMAGE"
