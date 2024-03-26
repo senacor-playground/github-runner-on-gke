@@ -21,26 +21,17 @@ jobs:
         run: |
           #!/bin/bash
 
-          folder_paths=("node/16.20.2" "node/18.19.1" "node/20.11.1")
+          folder_paths=("node/16.20.2" "node/20.11.1")
 
           echo "FROM europe-docker.pkg.dev/senacor-playground/beppo-repo/imported/ghcr.io/actions/actions-runner:2.314.1" > Dockerfile
           for folder_path in ${folder_paths[@]}; do
-            echo "Handling $folder_path"
-            tarfile_name="${folder_path//\//_}.tar"
-            tar -cf "$tarfile_name" "${{ runner.tool_cache }}/$folder_path" --sort=name --mtime="@0" --pax-option=exthdr.name=%d/PaxHeaders/%f,delete=atime,delete=ctime
-            touch -t 197001010000.00 "$tarfile_name"
-            echo "sha256: $(shasum -a 256 $tarfile_name)"
-            echo "COPY $tarfile_name ." >> Dockerfile
+            echo "COPY --form=tool-cache $folder_path /home/runner/_work/_tool/$folder_path" >> Dockerfile
           done
 
           cat Dockerfile
           ls -la
       - run: |
-          buildah build --layers --timestamp 0 -t "$IMAGE" .
+          buildah build --layers --timestamp 0 --build-context "tool-cache=${{ runner.tool_cache }}" -t "$IMAGE" .
           buildah push "$IMAGE"
         env:
           IMAGE: europe-docker.pkg.dev/senacor-playground/beppo-repo/actions-runner-with-tool-cache:latest
-      # - run: |
-      #     docker buildx create --use --driver-opt image=moby/buildkit:v0.13.1
-      #     docker buildx build --platform linux/amd64 --build-arg SOURCE_DATE_EPOCH="0" --output type=image,name=$IMAGE,push=true,rewrite-timestamp=true .
-      #   env:
