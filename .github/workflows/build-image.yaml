@@ -35,6 +35,7 @@ jobs:
             echo "Handling $folder_path"
             tarfile_name="${folder_path//\//_}.tar"
             tar -cf "$tarfile_name" "${{ runner.tool_cache }}/$folder_path" --sort=name
+            echo "sha256: $(shasum -a 256 $tarfile_name)"
             echo "ADD $tarfile_name home/runner/_work/_tool/$folder_path" >> Dockerfile
           done
 
