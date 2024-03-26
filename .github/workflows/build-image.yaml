@@ -12,7 +12,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      IMAGE: europe-docker.pkg.dev/senacor-playground/beppo-repo/actions-runner-with-tool-cache:latest
+      OUTPUT_IMAGE: europe-docker.pkg.dev/senacor-playground/beppo-repo/actions-runner-with-tool-cache:latest
     steps:
       - name: Clear existing tool cache
         run: rm -rf ${{ runner.tool_cache }}/*
@@ -37,7 +37,7 @@ jobs:
           done < <(find . -mindepth 2 -maxdepth 2 -type d -print0)
           cat Dockerfile
       - name: Build image # Using Buildah due to its support for reproducible builds
-        run: buildah build --layers --timestamp 0 -t "$IMAGE" .
+        run: buildah build --layers --timestamp 0 -t "$OUTPUT_IMAGE" .
       - uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: projects/211935152727/locations/global/workloadIdentityPools/github/providers/senacor-playground
@@ -45,4 +45,4 @@ jobs:
       - run: gcloud auth configure-docker europe-docker.pkg.dev
       - name: Push image
         working-directory: ${{ runner.tool_cache }}
-        run: buildah push "$IMAGE"
+        run: buildah push "$OUTPUT_IMAGE"
