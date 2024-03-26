@@ -32,8 +32,9 @@ jobs:
 
           echo "FROM europe-docker.pkg.dev/senacor-playground/beppo-repo/imported/ghcr.io/actions/actions-runner:2.314.1" > Dockerfile
           for folder_path in ${folder_paths[@]}; do
+            echo "Handling $folder_path"
             tarfile_name="${folder_path//\//_}.tar"
-            tar cf - "${{ runner.tool_cache }}/$folder_path" --sort=name "$tarfile_name"
+            tar -cf "$tarfile_name" "${{ runner.tool_cache }}/$folder_path" --sort=name
             echo "ADD $tarfile_name home/runner/_work/_tool/$folder_path" >> Dockerfile
           done
 
