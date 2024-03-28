@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       INPUT_IMAGE: europe-docker.pkg.dev/senacor-playground/beppo-repo/imported/ghcr.io/actions/actions-runner:2.314.1
-      OUTPUT_IMAGE: europe-docker.pkg.dev/senacor-playground/beppo-repo/actions-runner-with-tool-cache:buildx
+      OUTPUT_IMAGE: europe-docker.pkg.dev/senacor-playground/beppo-repo/actions-runner-with-tool-cache:latest
     steps:
       - name: Clear existing tool cache
         run: rm -rf ${{ runner.tool_cache }}/*
