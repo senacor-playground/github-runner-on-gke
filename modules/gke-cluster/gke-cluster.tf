@@ -33,7 +33,7 @@ resource "google_container_cluster" "default" {
     enabled = true
     auto_provisioning_defaults {
       disk_type       = "pd-ssd"
-      disk_size       = 100
+      disk_size       = 50
       image_type      = "COS_CONTAINERD"
       oauth_scopes    = ["https://www.googleapis.com/auth/cloud-platform"]
       service_account = var.nodes_service_account_email
@@ -63,12 +63,6 @@ resource "google_container_cluster" "default" {
 
   workload_identity_config {
     workload_pool = "${var.project_id}.svc.id.goog"
-  }
-
-  addons_config {
-    gcs_fuse_csi_driver_config {
-      enabled = true
-    }
   }
 }
 
