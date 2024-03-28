@@ -22,7 +22,6 @@ jobs:
       # Install tools
       # -----------------------------------------------------------------------
       - uses: google-github-actions/setup-gcloud@v2
-      - uses: hashicorp/setup-terraform@v3
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
