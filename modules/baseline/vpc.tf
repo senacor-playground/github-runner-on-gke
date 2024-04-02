@@ -1,6 +1,6 @@
 resource "google_compute_network" "default" {
   project                 = var.project_id
-  name                    = "beppo"
+  name                    = var.name
   auto_create_subnetworks = false
 }
 
@@ -13,7 +13,7 @@ resource "google_compute_subnetwork" "subnets" {
     }
   }
   project = var.project_id
-  name    = each.key
+  name    = "${google_compute_network.default.name}-${each.key}"
   region  = each.value.region
 
   network = google_compute_network.default.id

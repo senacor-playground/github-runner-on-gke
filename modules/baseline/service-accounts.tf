@@ -5,7 +5,7 @@ resource "google_service_account" "service_accounts" {
     "github-runner-nodes" = "For GKE worker node VMs"
   }
   project    = var.project_id
-  account_id = each.key
+  account_id = "${var.name}-${each.key}"
 }
 
 resource "google_service_account_iam_member" "workload_identity" {

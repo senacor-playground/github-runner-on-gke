@@ -1,6 +1,7 @@
 module "baseline" {
   source     = "./modules/baseline"
   project_id = var.project_id
+  name       = var.name
 }
 
 module "config_sync_oci_image" {
@@ -16,7 +17,7 @@ module "config_sync_oci_image" {
 module "gke_cluster" {
   source                            = "./modules/gke-cluster"
   project_id                        = var.project_id
-  gke_cluster_name                  = "github-runners"
+  gke_cluster_name                  = "${var.name}-github-runners"
   region                            = "europe-west4"
   zone                              = "europe-west4-a"
   nodes_service_account_email       = module.baseline.service_account_emails["github-runner-nodes"]

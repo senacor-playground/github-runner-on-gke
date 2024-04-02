@@ -1,6 +1,6 @@
 resource "google_compute_router" "default" {
   project = var.project_id
-  name    = "beppo"
+  name    = var.name
   region  = "europe-west4"
   network = google_compute_network.default.id
 
@@ -11,7 +11,7 @@ resource "google_compute_router" "default" {
 
 resource "google_compute_router_nat" "nat" {
   project                            = var.project_id
-  name                               = "beppo"
+  name                               = var.name
   router                             = google_compute_router.default.name
   region                             = google_compute_router.default.region
   nat_ip_allocate_option             = "AUTO_ONLY"
