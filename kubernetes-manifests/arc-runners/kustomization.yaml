@@ -21,6 +21,6 @@ helmCharts:
       controllerServiceAccount:
         namespace: arc-systems
         name: arc-gha-rs-controller
-      minRunners: 2
+      minRunners: 1
 resources:
   - secret.yaml
