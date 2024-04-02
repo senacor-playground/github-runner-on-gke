@@ -1,7 +1,7 @@
 helmCharts:
   - releaseName: self-hosted-basic
     namespace: arc-runners
-    name: gha-runner-scale-set-0.8.3
+    name: gha-runner-scale-set-0.9.0
     valuesInline:
       githubConfigUrl: https://github.com/senacor-playground
       githubConfigSecret: github-runners-app
