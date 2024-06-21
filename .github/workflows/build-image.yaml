@@ -34,8 +34,8 @@ jobs:
         # Each tool gets a layer in the resulting image that only changes if the tool changes:
         # - Layer 1 to layer N contain the GitHub Actions runner (base image)
         # - Layer N+1 contains tool 1 (e.g. Node.JS Version 20) and only changes if tool 1 is updated
-        # - Layer N+1 contains tool 2 (e.g. Gcloud Version 9000) and only changes if tool 2 is updated
-        # - Layer N to Layer M contain further tools
+        # - Layer N+2 contains tool 2 (e.g. Gcloud Version 9000) and only changes if tool 2 is updated
+        # - Layer N+3 to Layer M contain further tools
         run: |
           echo "FROM $INPUT_IMAGE" > Dockerfile
           while IFS= read -r -d '' folder_path; do
