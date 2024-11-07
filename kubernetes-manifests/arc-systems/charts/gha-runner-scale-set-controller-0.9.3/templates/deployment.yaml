@@ -79,6 +79,9 @@ spec:
         - "--listener-metrics-endpoint="
         - "--metrics-addr=0"
         {{- end }}
+        {{- range .Values.flags.excludeLabelPropagationPrefixes }}
+        - "--exclude-label-propagation-prefix={{ . }}"
+        {{- end }}
         command:
         - "/manager"
         {{- with .Values.metrics }}
@@ -126,6 +129,10 @@ spec:
       {{- end }}
       {{- with .Values.affinity }}
       affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.tolerations }}
