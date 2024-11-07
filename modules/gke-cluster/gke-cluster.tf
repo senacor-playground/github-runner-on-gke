@@ -76,6 +76,7 @@ resource "google_gke_hub_feature_membership" "default" {
 
   configmanagement {
     config_sync {
+      enabled       = true
       source_format = "unstructured"
       oci {
         sync_repo                 = var.config_sync_oci_image
